@@ -312,17 +312,15 @@
     "_id": ""
   },
   {
-    "__type__": "be004DoQjlDSIhyMtAg+/kk",
+    "__type__": "054f5yl0s9F8aiBj5RLq5Hp",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "m_line": null,
-    "m_point": null,
-    "m_slinged": false,
-    "m_maxDistance": 10,
+    "label": null,
+    "text": "hello",
     "_id": ""
   },
   {
