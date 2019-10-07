@@ -1,15 +1,15 @@
 import SceneMgr from "./SceneMgr";
 import MissionMgr from "./MissionMgr";
 import UI_Main from "./UI_Main";
-import GameEventMgr from "./GameEventMgr";
-import { EventMessage } from "./EventMessage";
+// import GameEventMgr from "./GameEventMgr";
+// import { EventMessage } from "./EventMessage";
 
 const {ccclass, property} = cc._decorator;
 
 @ccclass
 export default class GameMgr extends cc.Component 
 {
-    static instance:GameMgr = null;
+    //static instance:GameMgr = null;
     @property(SceneMgr)
     scene:SceneMgr = null;
     @property(MissionMgr)
@@ -23,8 +23,8 @@ onLoad()
     cc.director.getPhysicsManager().enabled = true;
     cc.director.getCollisionManager().enabled = true;
 
-    if(GameMgr.instance == null)
-        GameMgr.instance = this;
+    // if(GameMgr.instance == null)
+    //     GameMgr.instance = this;
 }
 
     start()

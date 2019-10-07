@@ -1,5 +1,5 @@
-import GameEventMgr from "./GameEventMgr";
-import { EventMessage } from "./EventMessage";
+// import GameEventMgr from "./GameEventMgr";
+// import { EventMessage } from "./EventMessage";
 
 const {ccclass, property} = cc._decorator;
 
@@ -18,7 +18,7 @@ export default class Pillar extends cc.Component {
 
     onLoad()
     {
-        this.point.active = false;
+        //this.point.active = false;
        
         //this.node.on("bindJoint",this.BindJoint,this);
     }
@@ -30,18 +30,18 @@ export default class Pillar extends cc.Component {
 
     BindJoint(joint:cc.RevoluteJoint):void
     {
-        if(!joint)
-        {
-            console.log("joint is null");
-            return;
-        }
-        if(this.beenSlinged) return;
-        var pos = this.node.position;
-        var delta = joint.node.position.sub(pos).mag();
-        if(delta > this.maxDis) return;
-        joint.connectedBody = this.rig;
-        this.beenSlinged = true;
-        this.point.active = true;
+        // if(!joint)
+        // {
+        //     console.log("joint is null");
+        //     return;
+        // }
+        // if(this.beenSlinged) return;
+        // var pos = this.node.position;
+        // var delta = joint.node.position.sub(pos).mag();
+        // if(delta > this.maxDis) return;
+        // joint.connectedBody = this.rig;
+        // this.beenSlinged = true;
+        // this.point.active = true;
     }
 
     public Init(dis:number):void

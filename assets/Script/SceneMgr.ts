@@ -1,7 +1,9 @@
-import Pillar from "./Pillar";
+// import Pillar from "./Pillar";
 import GameEventMgr from "./GameEventMgr";
 import { EventMessage } from "./EventMessage";
+import Pillar from "./Pillar";
 import Player from "./Player";
+// import Player from "./Player";
 
 const { ccclass, property } = cc._decorator;
 
@@ -27,15 +29,15 @@ export default class SceneMgr extends cc.Component {
     onLoad()
     {  
         cc.director.getPhysicsManager().enabled = true;
-        cc.director.getCollisionManager().enabled = true;
+        cc.director.getCollisionManager().enabled = true;      
         var follow = cc.follow(this.player,cc.rect(0,0,cc.view.getVisibleSize().width,cc.view.getVisibleSize().height));
         this.node.runAction(follow);
     }
 
     start()
-    {
-        // GameEventMgr.register(EventMessage.GE_Bind,this.onBindJoint,this.node);
-        // GameEventMgr.register(EventMessage.GE_Release,this.onDepatchJoint,this.node);
+    { 
+        GameEventMgr.register(EventMessage.GE_Bind,this.onBindJoint,this.node);
+        GameEventMgr.register(EventMessage.GE_Release,this.onDepatchJoint,this.node);
     }
 
     public init(): void {
@@ -50,17 +52,17 @@ export default class SceneMgr extends cc.Component {
             console.log("最后一个了");
             return;
         }
-        // this.line.getComponent<cc.RevoluteJoint>(cc.RevoluteJoint).connectedBody =
-        // this.pillarArray[this.index].getComponent<Pillar>(Pillar).rig;
-        // this.pillarArray[this.index].getComponent<Pillar>(Pillar).point.active = true;
-        // this.player.getComponent(Player).onBindJoint(this.line);
+        this.line.getComponent<cc.RevoluteJoint>(cc.RevoluteJoint).connectedBody =
+        this.pillarArray[this.index].getComponent<Pillar>(Pillar).rig;
+        this.pillarArray[this.index].getComponent<Pillar>(Pillar).point.active = true;
+        this.player.getComponent(Player).onBindJoint(this.line);
         this.index++;
     }
 
     onDepatchJoint():void
     {
-        // this.line.getComponent<cc.RevoluteJoint>(cc.RevoluteJoint).connectedBody = null;
-        // this.player.getComponent(Player).onDepatchJoint();
+        this.line.getComponent<cc.RevoluteJoint>(cc.RevoluteJoint).connectedBody = null;
+        this.player.getComponent(Player).onDepatchJoint();
     }
 
     LoadScene(level: number): void 

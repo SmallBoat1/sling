@@ -1,5 +1,5 @@
-import GameEventMgr from "./GameEventMgr";
-import { EventMessage } from "./EventMessage";
+// import GameEventMgr from "./GameEventMgr";
+// import { EventMessage } from "./EventMessage";
 
 const {ccclass, property} = cc._decorator;
 
@@ -34,7 +34,7 @@ export default class Player extends cc.Component {
 
     start()
     {
-        GameEventMgr.register(EventMessage.GE_Jump,this.onJump,this.node);
+       // GameEventMgr.register(EventMessage.GE_Jump,this.onJump,this.node);
     }
 
     onBindJoint(parent:cc.Node):void
