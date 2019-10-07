@@ -1,3 +1,6 @@
+import GameEventMgr from "./GameEventMgr";
+import { EventMessage } from "./EventMessage";
+
 const {ccclass, property} = cc._decorator;
 
 @ccclass
@@ -16,7 +19,13 @@ export default class Pillar extends cc.Component {
     onLoad()
     {
         this.point.active = false;
-        this.node.on("bindJoint",this.BindJoint,this);
+       
+        //this.node.on("bindJoint",this.BindJoint,this);
+    }
+
+    start()
+    {
+        //GameEventMgr.register(EventMessage.GE_Bind,this.BindJoint,this);
     }
 
     BindJoint(joint:cc.RevoluteJoint):void

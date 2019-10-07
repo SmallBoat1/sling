@@ -61,7 +61,7 @@
     "_position": {
       "__type__": "cc.Vec3",
       "x": -200,
-      "y": -377.2,
+      "y": -297,
       "z": 0
     },
     "_scale": {
@@ -81,7 +81,7 @@
     "_skewY": 0,
     "_zIndex": 0,
     "_is3DNode": false,
-    "groupIndex": 0,
+    "groupIndex": 2,
     "_rotationX": 0,
     "_rotationY": 0,
     "_id": ""
@@ -152,7 +152,7 @@
   },
   {
     "__type__": "cc.ParticleSystem",
-    "_name": "",
+    "_name": "tail<ParticleSystem>",
     "_objFlags": 0,
     "node": {
       "__id__": 2
@@ -259,7 +259,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "hero<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 1
@@ -294,7 +294,7 @@
     },
     "_enabled": true,
     "_type": 2,
-    "_allowSleep": true,
+    "_allowSleep": false,
     "_gravityScale": 0.5,
     "_linearDamping": 0,
     "_angularDamping": 0,
@@ -305,7 +305,7 @@
     },
     "_angularVelocity": 0,
     "_fixedRotation": false,
-    "enabledContactListener": false,
+    "enabledContactListener": true,
     "bullet": false,
     "_id": ""
   },
@@ -336,15 +336,25 @@
     "_id": ""
   },
   {
-    "__type__": "0128dbr02JEAJgWWtww1tri",
+    "__type__": "29d15H3iWVMHJxPQt/h7+iV",
     "_name": "",
     "_objFlags": 0,
     "node": {
       "__id__": 1
     },
     "_enabled": true,
-    "label": null,
-    "text": "hello",
+    "pillarid": 0,
+    "isSmooth": false,
+    "gravity": 1,
+    "oldParent": null,
+    "force": {
+      "__type__": "cc.Vec2",
+      "x": 20,
+      "y": 100
+    },
+    "rig": {
+      "__id__": 6
+    },
     "_id": ""
   },
   {
