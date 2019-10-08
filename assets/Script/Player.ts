@@ -1,76 +1,96 @@
-// import GameEventMgr from "./GameEventMgr";
-// import { EventMessage } from "./EventMessage";
+import GameEventMgr from "./GameEventMgr";
+import { EventMessage } from "./EventMessage";
 
-const {ccclass, property} = cc._decorator;
+const { ccclass, property } = cc._decorator;
 
 // 玩家角色类
 @ccclass
 export default class Player extends cc.Component {
     @property(cc.Node)
-    oldParent :cc.Node = null;
+    oldParent: cc.Node = null;
 
     @property(cc.Vec2)
-    force:cc.Vec2 = cc.Vec2.ZERO;
+    force: cc.Vec2 = cc.Vec2.ZERO;
 
     @property(cc.RigidBody)
-    rig:cc.RigidBody = null;
+    rig: cc.RigidBody = null;
 
     // 当前id
     @property
     pillarid: number = 0;
     // 是否在悠荡
-    @property 
-    isSmooth:boolean = false;
+    @property
+    isSmooth: boolean = false;
     // 质量
     @property
-    gravity:number = 1;
+    gravity: number = 1;
 
     @property
-    jump:boolean=false;
+    jump: boolean = false;
 
-    onLoad () {
-        this.oldParent = this.node.parent;
+    @property(cc.Node)
+    followTarget: cc.Node = null;
+
+    onLoad() {
+        this.oldParent = cc.find("Scene");
     }
 
-    start()
-    {
-       // GameEventMgr.register(EventMessage.GE_Jump,this.onJump,this.node);
+    start() {
+        GameEventMgr.register(EventMessage.GE_Jump, this.onJump, this);
     }
 
-    onBindJoint(parent:cc.Node):void
-    {
-
-        // this.node.setParent(parent);
-        // this.node.setRotation(0,0,0,0);
-        // this.rig.gravityScale = 0;
-        // this.isSmooth = true;
+    onBindJoint(target: cc.Node): void {
+        this.followTarget = target;
+        var pos = target.parent.parent.convertToWorldSpaceAR(target.parent.position);
+        this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
+       // this.rig.type = cc.RigidBodyType.Static;
+        this.isSmooth = true;
     }
 
-    addRig():void
-    {
+    addRig(): void {
+        var v = cc.Vec2.ZERO;
+        //this.rig.type = cc.RigidBodyType.Dynamic;
+        var wpos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
+        var prig = this.followTarget.parent.getComponent(cc.RigidBody);
+        if(prig)
+        {
+            prig.getLinearVelocityFromWorldPoint(wpos, v);
+            this.rig.linearVelocity = v;
+        } 
+    }
+
+    onDepatchJoint(): void {
         this.isSmooth = false;
-        this. rig.gravityScale =this.gravity;
-        this.rig.type = cc.RigidBodyType.Dynamic;
-        this.rig.bullet = true;
-        this.rig.awake = true;
-    }
-
-    onDepatchJoint():void
-    {
-        if(!this.isSmooth) return;
-        this.isSmooth = false;
-        this.node.setParent(this.oldParent);
         this.addRig();
     }
 
-    onJump():void
-    {
+    onJump(): void {
         this.rig = this.node.getComponent<cc.RigidBody>(cc.RigidBody);
-        this.rig .applyLinearImpulse(this.force,this.rig.getWorldCenter(),true);
-        this.jump = true;    
+        this.rig.applyLinearImpulse(this.force, this.rig.getWorldCenter(), true);
+        this.jump = true;
     }
 
-    // update (dt) {
-    //     //this.node.x+=1;
-    // }
+    onBeginContact(context:any,selfCollider:cc.PhysicsBoxCollider,other:cc.PhysicsBoxCollider)
+    {
+
+        this.onDepatchJoint();
+        this.followTarget.parent.active = false;
+        console.log("碰撞");
+    }
+
+    updatePos():void 
+    {
+        var pos = this.followTarget.parent.parent.convertToWorldSpaceAR(this.followTarget.parent.position);
+        this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
+        var pos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
+        this.node.position = this.node.parent.convertToNodeSpaceAR(pos);
+    }
+
+    update(dt)
+    {
+        if(this.isSmooth)
+        {
+            this.updatePos();
+        }
+    }
 }

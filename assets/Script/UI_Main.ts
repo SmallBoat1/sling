@@ -1,5 +1,5 @@
-// import GameEventMgr from "./GameEventMgr";
-// import { EventMessage } from "./EventMessage";
+import GameEventMgr from "./GameEventMgr";
+import { EventMessage } from "./EventMessage";
 
 const {ccclass, property} = cc._decorator;
 
@@ -36,8 +36,8 @@ export default class UI_Main extends cc.Component {
 
     public OnJump():void
     {
-       // GameEventMgr.emit(EventMessage.GE_Jump)
-        this.startJump.active = false;
+       GameEventMgr.emit(EventMessage.GE_Jump)
+       this.startJump.active = false;
     }
 
     // onLoad () {}

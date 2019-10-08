@@ -1,14 +1,16 @@
 {
-  "ver": "2.3.0",
+  "ver": "2.3.3",
   "uuid": "47ce05a3-c939-474e-b515-9800133fd3f2",
   "type": "sprite",
   "wrapMode": "clamp",
   "filterMode": "bilinear",
   "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
   "platformSettings": {},
   "subMetas": {
     "borange_small_01": {
-      "ver": "1.0.3",
+      "ver": "1.0.4",
       "uuid": "b49a10a8-69b9-402d-9735-61651c3c6478",
       "rawTextureUuid": "47ce05a3-c939-474e-b515-9800133fd3f2",
       "trimType": "auto",

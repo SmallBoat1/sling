@@ -1,8 +1,8 @@
 import SceneMgr from "./SceneMgr";
 import MissionMgr from "./MissionMgr";
 import UI_Main from "./UI_Main";
-// import GameEventMgr from "./GameEventMgr";
-// import { EventMessage } from "./EventMessage";
+import GameEventMgr from "./GameEventMgr";
+import { EventMessage } from "./EventMessage";
 
 const {ccclass, property} = cc._decorator;
 
@@ -31,13 +31,13 @@ onLoad()
     {
         // if(cc.sys.platform == cc.sys.EDITOR_CORE||cc.sys.EDITOR_PAGE)
         {
-            this.node.on(cc.Node.EventType.MOUSE_DOWN,this.onTouchDown,this);
-            this.node.on(cc.Node.EventType.MOUSE_UP,this.onTouchUp,this);
+            // this.node.on(cc.Node.EventType.MOUSE_DOWN,this.onTouchDown,this);
+            // this.node.on(cc.Node.EventType.MOUSE_UP,this.onTouchUp,this);
         }
         // else
         // {
-        //     this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchDown,this);
-        //     this.node.on(cc.Node.EventType.TOUCH_END,this.onTouchUp,this);
+            this.node.on(cc.Node.EventType.TOUCH_START,this.onTouchDown,this);
+            this.node.on(cc.Node.EventType.TOUCH_END,this.onTouchUp,this);
         // }       
 
         this.scene.init();
@@ -47,11 +47,11 @@ onLoad()
 
     onTouchDown()
     {
-        //GameEventMgr.emit(EventMessage.GE_Bind);
+        this.scene.onBindJoint();
     }
 
     onTouchUp()
     {
-        console.log("onTouchUp");
+        this.scene.onDepatchJoint();
     }
 }

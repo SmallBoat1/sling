@@ -9,78 +9,80 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class SceneMgr extends cc.Component {
-    @property(cc.Node)
-    pillarRoot: cc.Node = null;
-
-    @property(cc.Node)
-    line: cc.Node = null;
-
     @property(cc.Prefab)
     pillarPref: cc.Prefab = null;
     @property(cc.Node)
     Bg: cc.Node = null;
     @property(cc.Node)
-    player:cc.Node = null;
+    player: cc.Node = null;
+    @property(cc.Node)
+    camera: cc.Node = null;
+    @property(cc.Node)
+    test: cc.Node = null;
     @property(Array)
     pillarArray: Array<cc.Node> = new Array<cc.Node>(10);
 
     index: number = 0;
 
-    onLoad()
-    {  
+    offset:number = 0;
+    lastPos:number = 0;
+
+    onLoad() {
         cc.director.getPhysicsManager().enabled = true;
-        cc.director.getCollisionManager().enabled = true;      
-        var follow = cc.follow(this.player,cc.rect(0,0,cc.view.getVisibleSize().width,cc.view.getVisibleSize().height));
-        this.node.runAction(follow);
+        cc.director.getCollisionManager().enabled = true;
+        // var follow = cc.follow(this.player, cc.rect(0, 0, cc.view.getVisibleSize().width/2, cc.view.getVisibleSize().height/2));
+        // this.node.runAction(follow);
     }
 
-    start()
-    { 
-        GameEventMgr.register(EventMessage.GE_Bind,this.onBindJoint,this.node);
-        GameEventMgr.register(EventMessage.GE_Release,this.onDepatchJoint,this.node);
+    start() {
+        // GameEventMgr.register(EventMessage.GE_Bind, this.onBindJoint, this.node);
+        // GameEventMgr.register(EventMessage.GE_Release, this.onDepatchJoint, this.node);
+        //GameEventMgr.register(EventMessage.GE_Jump,this.onJump,this);
+        this.lastPos = this.player.parent.convertToWorldSpaceAR(this.player.position).x;
     }
 
     public init(): void {
-        this.line.active = false;
         this.LoadScene(0);
     }
 
     onBindJoint(): void {
-        this.line.active = true;
-        if(this.index >= this.pillarArray.length)
+       
+        // if (this.index >= this.pillarArray.length) {
+        //     console.log("最后一个了");
+        //     return;
+        // }
+        if(!this.test.getComponent(Pillar).beenSlinged)
         {
-            console.log("最后一个了");
-            return;
+            this.test.getComponent(Pillar).BindJoint(this.player);
+            this.player.getComponent(Player).onBindJoint(this.test.getComponent(Pillar).pos);
+            this.index++;
         }
-        this.line.getComponent<cc.RevoluteJoint>(cc.RevoluteJoint).connectedBody =
-        this.pillarArray[this.index].getComponent<Pillar>(Pillar).rig;
-        this.pillarArray[this.index].getComponent<Pillar>(Pillar).point.active = true;
-        this.player.getComponent(Player).onBindJoint(this.line);
-        this.index++;
     }
 
-    onDepatchJoint():void
+    onDepatchJoint(): void {
+        this.test.getComponent(Pillar).Release(this.player);
+    }
+
+    update(dt)
     {
-        this.line.getComponent<cc.RevoluteJoint>(cc.RevoluteJoint).connectedBody = null;
-        this.player.getComponent(Player).onDepatchJoint();
+        var pos = this.player.parent.convertToWorldSpaceAR(this.player.position);
+        this.offset = pos.x - this.lastPos;
+        this.lastPos = pos.x;
+        this.camera.position.x += this.offset;
+        //console.log("pos "  + pos);
     }
 
-    LoadScene(level: number): void 
-    { 
-        console.log("LoadScene");
-        // this. pillarArray.push(cc.instantiate(this.pillarPref));
-        // this.pillarArray[0].name = "pillar_"+0;
-        // this.pillarArray[0].parent = this.pillarRoot;
-        // this.pillarArray[0].anchorX  = 0;   
-        // this.pillarArray[0].active = true;    
-    //    for (let i = 0; i < 1; i++) {
-
-    //     this. pillarArray.push(cc.instantiate(this.pillarPref));
-    //     this.pillarArray[i].name = "pillar_"+i;
-    //     this.pillarArray[i].parent = this.pillarRoot;
-    //     this.pillarArray[i].anchorX += 10*i;   
-    //     this.pillarArray[i].active = true;    
-    //     //console.log(this.pillarArray[i].anchorX,this.pillarArray[i].anchorY);
-    //    }
+    LoadScene(level: number): void {
+        console.log("LoadScene");   
+        // for (let i = 0; i < 5; i++) {
+        //     this.pillarArray.push(cc.instantiate(this.pillarPref));
+        //     this.pillarArray[i].name = "pillar_" + i;
+        //     this.pillarArray[i].parent = this.node;
+        //     this.pillarArray[i].x = 0;
+        //     this.pillarArray[i].x += 50 * i;
+        //     this.pillarArray[i].active = true;
+        //     this.pillarArray[i].getComponent(Pillar).Init(100);
+        //     console.log(this.pillarArray[i].x, this.pillarArray[i].y);
+        // }
     }
 }
