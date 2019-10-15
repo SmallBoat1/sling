@@ -30,14 +30,10 @@ export default class SceneMgr extends cc.Component {
     onLoad() {
         cc.director.getPhysicsManager().enabled = true;
         cc.director.getCollisionManager().enabled = true;
-        // var follow = cc.follow(this.player, cc.rect(0, 0, cc.view.getVisibleSize().width/2, cc.view.getVisibleSize().height/2));
-        // this.node.runAction(follow);
     }
 
-    start() {
-        // GameEventMgr.register(EventMessage.GE_Bind, this.onBindJoint, this.node);
-        // GameEventMgr.register(EventMessage.GE_Release, this.onDepatchJoint, this.node);
-        //GameEventMgr.register(EventMessage.GE_Jump,this.onJump,this);
+    start() 
+    {
         this.lastPos = this.player.parent.convertToWorldSpaceAR(this.player.position).x;
     }
 

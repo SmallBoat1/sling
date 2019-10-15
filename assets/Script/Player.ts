@@ -44,6 +44,7 @@ export default class Player extends cc.Component {
         var pos = target.parent.parent.convertToWorldSpaceAR(target.parent.position);
         this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
        // this.rig.type = cc.RigidBodyType.Static;
+       this.node.getChildByName("tail").active  =true;
         this.isSmooth = true;
     }
 
@@ -70,20 +71,33 @@ export default class Player extends cc.Component {
         this.jump = true;
     }
 
-    onBeginContact(context:any,selfCollider:cc.PhysicsBoxCollider,other:cc.PhysicsBoxCollider)
+    onBeginContact(context:any,selfCollider:cc.BoxCollider,other:cc.BoxCollider)
     {
-
         this.onDepatchJoint();
         this.followTarget.parent.active = false;
-        console.log("碰撞");
+        this.node.getChildByName("tail").active  =false;
+        console.log("碰撞" + other.name);
+        if(other.name == "cube")// 到达终点
+        {
+            this.onFinish();
+        }
     }
+
+    onFinish()
+    {
+
+    }
+
+    
 
     updatePos():void 
     {
-        var pos = this.followTarget.parent.parent.convertToWorldSpaceAR(this.followTarget.parent.position);
-        this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
+        
+        var lookPoint = this.followTarget.parent.parent.convertToWorldSpaceAR(this.followTarget.parent.position);
+        this.node.lookAt(new cc.Vec3(lookPoint.x,lookPoint.y,0));
         var pos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
         this.node.position = this.node.parent.convertToNodeSpaceAR(pos);
+        GameEventMgr.emit(EventMessage.GE_UpdateProgress,this.node.position);
     }
 
     update(dt)
