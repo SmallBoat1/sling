@@ -24,7 +24,7 @@ export default class Player extends cc.Component {
     // 质量
     @property
     gravity: number = 1;
-
+    
     @property
     jump: boolean = false;
 
@@ -37,6 +37,13 @@ export default class Player extends cc.Component {
 
     start() {
         GameEventMgr.register(EventMessage.GE_Jump, this.onJump, this);
+    }
+
+    Init()
+    {
+        this.jump = false;
+        this.isSmooth = false;
+        this.pillarid = 0;
     }
 
     onBindJoint(target: cc.Node): void {
@@ -92,12 +99,11 @@ export default class Player extends cc.Component {
 
     updatePos():void 
     {
-        
         var lookPoint = this.followTarget.parent.parent.convertToWorldSpaceAR(this.followTarget.parent.position);
         this.node.lookAt(new cc.Vec3(lookPoint.x,lookPoint.y,0));
         var pos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
         this.node.position = this.node.parent.convertToNodeSpaceAR(pos);
-        GameEventMgr.emit(EventMessage.GE_UpdateProgress,this.node.position);
+       
     }
 
     update(dt)
