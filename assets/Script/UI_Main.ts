@@ -46,6 +46,12 @@ export default class UI_Main extends cc.Component {
 
     }
 
+
+    public openSetting():void
+    {
+
+    }
+
     public OnJump():void
     {
        GameEventMgr.emit(EventMessage.GE_Jump)
@@ -58,6 +64,7 @@ export default class UI_Main extends cc.Component {
 
     updateProgress(pro:number):void
     {
+        console.log("progress " + pro);
         this.progress.progress = pro;
     }
 

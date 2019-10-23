@@ -24,9 +24,11 @@ export default class Player extends cc.Component {
     // 质量
     @property
     gravity: number = 1;
-    
+
     @property
     jump: boolean = false;
+    @property
+    moving: boolean = false;
 
     @property(cc.Node)
     followTarget: cc.Node = null;
@@ -41,23 +43,26 @@ export default class Player extends cc.Component {
 
     Init()
     {
+        this.moving = false;
         this.jump = false;
         this.isSmooth = false;
         this.pillarid = 0;
+        this.node.position = cc.v2(-212,-144);
+        this.rig.enabledContactListener = true;
     }
 
     onBindJoint(target: cc.Node): void {
         this.followTarget = target;
         var pos = target.parent.parent.convertToWorldSpaceAR(target.parent.position);
         this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
-       // this.rig.type = cc.RigidBodyType.Static;
+       this.rig.type = cc.RigidBodyType.Static;
        this.node.getChildByName("tail").active  =true;
         this.isSmooth = true;
     }
 
     addRig(): void {
         var v = cc.Vec2.ZERO;
-        //this.rig.type = cc.RigidBodyType.Dynamic;
+        this.rig.type = cc.RigidBodyType.Dynamic;
         var wpos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
         var prig = this.followTarget.parent.getComponent(cc.RigidBody);
         if(prig)
@@ -76,41 +81,54 @@ export default class Player extends cc.Component {
         this.rig = this.node.getComponent<cc.RigidBody>(cc.RigidBody);
         this.rig.applyLinearImpulse(this.force, this.rig.getWorldCenter(), true);
         this.jump = true;
+        this.moving = true;
     }
 
     onBeginContact(context:any,selfCollider:cc.BoxCollider,other:cc.BoxCollider)
     {
+        this.rig.enabledContactListener = false;
         this.onDepatchJoint();
         this.followTarget.parent.active = false;
         this.node.getChildByName("tail").active  =false;
         console.log("碰撞" + other.name);
         if(other.name == "cube")// 到达终点
         {
-            this.onFinish();
+            this.onFinish(1);
+        }
+        else
+        {
+            this.onFinish(-1);
         }
     }
 
-    onFinish()
+    onFinish(type:number)
     {
-
+        GameEventMgr.emit(EventMessage.GE_Finish,type);
+        this.moving = false;
     }
-
-    
 
     updatePos():void 
     {
+        var pos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
+        this.node.position = this.node.parent.convertToNodeSpaceAR(pos);  
         var lookPoint = this.followTarget.parent.parent.convertToWorldSpaceAR(this.followTarget.parent.position);
         this.node.lookAt(new cc.Vec3(lookPoint.x,lookPoint.y,0));
-        var pos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
-        this.node.position = this.node.parent.convertToNodeSpaceAR(pos);
-       
     }
 
-    update(dt)
+    lateUpdate()
     {
         if(this.isSmooth)
         {
             this.updatePos();
         }
     }
+
+
+    // update(dt)
+    // {
+    //     if(this.isSmooth)
+    //     {
+    //         this.updatePos();
+    //     }
+    // }
 }

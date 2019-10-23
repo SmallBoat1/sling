@@ -612,8 +612,8 @@
     "_active": true,
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -212.883,
-      "y": -143.801,
+      "x": -212,
+      "y": -144,
       "z": 0
     },
     "_eulerAngles": {
@@ -681,6 +681,8 @@
     "pillarPref": {
       "__uuid__": "e00cd7d1-cab7-4453-8e8e-5ccd500224aa"
     },
+    "wallPref": null,
+    "endPoint": null,
     "Bg": {
       "__id__": 3
     },
@@ -694,6 +696,7 @@
       "__id__": 15
     },
     "pillarArray": [],
+    "wallArray": [],
     "_id": "af6U/MBhVG05q6D6L3KLlT"
   },
   {
@@ -766,7 +769,7 @@
       "__id__": 22
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_level": 3,
     "_components": [
       {
@@ -1578,11 +1581,11 @@
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 26
+      "__id__": 29
     },
     "component": "",
-    "_componentId": "090e3yNhGxFd61HEnecUqHI",
-    "handler": "OnClick",
+    "_componentId": "a05fenaVoVPj5GzDZACdSfY",
+    "handler": "Openhome",
     "customEventData": ""
   },
   {
@@ -1952,11 +1955,11 @@
   {
     "__type__": "cc.ClickEvent",
     "target": {
-      "__id__": 26
+      "__id__": 29
     },
     "component": "",
-    "_componentId": "090e3yNhGxFd61HEnecUqHI",
-    "handler": "OnClick",
+    "_componentId": "a05fenaVoVPj5GzDZACdSfY",
+    "handler": "openSetting",
     "customEventData": ""
   },
   {
