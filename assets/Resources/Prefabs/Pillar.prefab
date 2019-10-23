@@ -694,7 +694,7 @@
     "pos": {
       "__id__": 11
     },
-    "maxDis": 0,
+    "startPos": 0,
     "beenSlinged": false,
     "_id": ""
   },

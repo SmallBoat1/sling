@@ -64,7 +64,7 @@ export default class UI_Main extends cc.Component {
 
     updateProgress(pro:number):void
     {
-        console.log("progress " + pro);
+        // console.log("progress " + pro);
         this.progress.progress = pro;
     }
 

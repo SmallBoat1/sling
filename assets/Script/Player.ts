@@ -53,23 +53,32 @@ export default class Player extends cc.Component {
 
     onBindJoint(target: cc.Node): void {
         this.followTarget = target;
-        var pos = target.parent.parent.convertToWorldSpaceAR(target.parent.position);
+        var pos = this.followTarget .parent.parent.convertToWorldSpaceAR(target.parent.position);
         this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
-       this.rig.type = cc.RigidBodyType.Static;
+       //this.rig.type = cc.RigidBodyType.Static;
        this.node.getChildByName("tail").active  =true;
         this.isSmooth = true;
     }
 
     addRig(): void {
         var v = cc.Vec2.ZERO;
-        this.rig.type = cc.RigidBodyType.Dynamic;
-        var wpos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
-        var prig = this.followTarget.parent.getComponent(cc.RigidBody);
-        if(prig)
-        {
-            prig.getLinearVelocityFromWorldPoint(wpos, v);
-            this.rig.linearVelocity = v;
-        } 
+        //this.rig.type = cc.RigidBodyType.Dynamic;
+        try {
+            if(this.followTarget)
+            {
+                var wpos = this.followTarget.parent.convertToWorldSpaceAR(this.followTarget.position);
+                var prig = this.followTarget.parent.getComponent(cc.RigidBody);
+                if(prig)
+                {
+                    prig.getLinearVelocityFromWorldPoint(wpos, v);
+                    this.rig.linearVelocity = v;
+                    this.rig.linearDamping = 0.3;
+                } 
+            }
+        } catch (error) {
+            console.log(error);
+        }
+      
     }
 
     onDepatchJoint(): void {
@@ -86,9 +95,10 @@ export default class Player extends cc.Component {
 
     onBeginContact(context:any,selfCollider:cc.BoxCollider,other:cc.BoxCollider)
     {
+        if(other.name == "StartPoint") return;
         this.rig.enabledContactListener = false;
         this.onDepatchJoint();
-        this.followTarget.parent.active = false;
+        if(this.followTarget) this.followTarget.parent.active = false;
         this.node.getChildByName("tail").active  =false;
         console.log("碰撞" + other.name);
         if(other.name == "cube")// 到达终点

@@ -60,8 +60,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": -212.883,
-      "y": -143.801,
+      "x": -212,
+      "y": -144,
       "z": 0
     },
     "_scale": {
@@ -167,7 +167,7 @@
     "_texture": {
       "__uuid__": "d0a82d39-bede-46c4-b698-c81ff0dedfff"
     },
-    "_stopped": true,
+    "_stopped": false,
     "playOnLoad": true,
     "autoRemoveOnFinish": true,
     "totalParticles": 200,
@@ -238,7 +238,7 @@
     "radialAccel": -671.0499877929688,
     "radialAccelVar": 65.79000091552734,
     "rotationIsDir": false,
-    "startRadius": 0,
+    "startRadius": 100,
     "startRadiusVar": 0,
     "endRadius": 0,
     "endRadiusVar": 0,
@@ -301,14 +301,14 @@
     "_type": 2,
     "_allowSleep": false,
     "_gravityScale": 1,
-    "_linearDamping": 0,
+    "_linearDamping": 0.3,
     "_angularDamping": 0,
     "_linearVelocity": {
       "__type__": "cc.Vec2",
       "x": 0,
       "y": 0
     },
-    "_angularVelocity": 0,
+    "_angularVelocity": 5,
     "_fixedRotation": false,
     "enabledContactListener": true,
     "bullet": false,
@@ -323,7 +323,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "tag": 0,
+    "tag": 100,
     "_density": 1,
     "_sensor": false,
     "_friction": 0.2,
@@ -362,6 +362,7 @@
     "isSmooth": false,
     "gravity": 1,
     "jump": false,
+    "moving": false,
     "followTarget": null,
     "_id": ""
   },
