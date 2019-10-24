@@ -49,14 +49,15 @@ export default class Player extends cc.Component {
         this.pillarid = 0;
         this.node.position = cc.v2(-212,-144);
         this.rig.enabledContactListener = true;
+        this.followTarget = null;
     }
 
     onBindJoint(target: cc.Node): void {
         this.followTarget = target;
         var pos = this.followTarget .parent.parent.convertToWorldSpaceAR(target.parent.position);
         this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
-       //this.rig.type = cc.RigidBodyType.Static;
-       this.node.getChildByName("tail").active  =true;
+        //this.rig.type = cc.RigidBodyType.Static;
+        this.node.getChildByName("tail").active  =true;
         this.isSmooth = true;
     }
 
@@ -95,12 +96,12 @@ export default class Player extends cc.Component {
 
     onBeginContact(context:any,selfCollider:cc.BoxCollider,other:cc.BoxCollider)
     {
-        if(other.name == "StartPoint") return;
+        if(!this.jump) return;
+        console.log("碰撞" + other.name);
         this.rig.enabledContactListener = false;
         this.onDepatchJoint();
         if(this.followTarget) this.followTarget.parent.active = false;
         this.node.getChildByName("tail").active  =false;
-        console.log("碰撞" + other.name);
         if(other.name == "cube")// 到达终点
         {
             this.onFinish(1);
@@ -109,6 +110,7 @@ export default class Player extends cc.Component {
         {
             this.onFinish(-1);
         }
+        this.moving = false;
     }
 
     onFinish(type:number)
@@ -132,13 +134,4 @@ export default class Player extends cc.Component {
             this.updatePos();
         }
     }
-
-
-    // update(dt)
-    // {
-    //     if(this.isSmooth)
-    //     {
-    //         this.updatePos();
-    //     }
-    // }
 }

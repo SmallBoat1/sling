@@ -6,4 +6,6 @@ export enum EventMessage
     GE_UpdateProgress,
     GE_Finish,
     GE_Reset,
+    GE_Home,
+    GE_Setting,
 }

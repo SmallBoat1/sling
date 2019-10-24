@@ -26,6 +26,10 @@ export default class UI_Main extends cc.Component {
     Center:cc.Node = null;
     @property(cc.Node)
     LevelPro:cc.Node = null;
+    @property(cc.Node)
+    Name:cc.Node = null;
+    
+
 
     @property(cc.ProgressBar)
     progress:cc.ProgressBar = null;
@@ -38,18 +42,30 @@ export default class UI_Main extends cc.Component {
     {
         this.Center.active = true;
         this.LevelPro.active = false;
+        this.startJump.active = true;
+        this.Home.active = true;
+        this.Setting.active = true;
+        this.Name.active =true;
     }
 
 
     public Openhome():void
     {
-
+        GameEventMgr.emit(EventMessage.GE_Home);
+        this.init();
     }
 
 
     public openSetting():void
     {
+        // TODO
+       
+    }
 
+    onFinish(type:number)
+    {
+        this.Home.active = true;
+        this.Setting.active = true;
     }
 
     public OnJump():void
@@ -60,17 +76,19 @@ export default class UI_Main extends cc.Component {
        this.LevelPro.active = true;
        this.curLevelLabel.string = this.Curlevel.toString();
        this.nextLevelLabel.string = (this.Curlevel+1).toString();
+       this.Home.active = false;
+       this.Setting.active = false;
+       this.Name.active =false;
     }
 
     updateProgress(pro:number):void
     {
-        // console.log("progress " + pro);
         this.progress.progress = pro;
     }
 
     start () 
     { 
-
         GameEventMgr.register(EventMessage.GE_UpdateProgress,this.updateProgress,this);
+        GameEventMgr.register(EventMessage.GE_Finish,this.onFinish,this);
     }
 }

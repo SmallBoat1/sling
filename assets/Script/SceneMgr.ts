@@ -10,13 +10,20 @@ const { ccclass, property } = cc._decorator;
 
 @ccclass
 export default class SceneMgr extends cc.Component {
+    // 预设
     @property(cc.Prefab)
     pillarPref: cc.Prefab = null;
     @property(cc.Prefab)
     wallPref: cc.Prefab = null;
+  
+    @property
+    playersPref:Array<cc.Prefab> = cc.Prefab [10];
+
+    // 节点
     @property(cc.Node)
     endPoint: cc.Node = null;
-
+    @property(cc.Node)
+    startPoint: cc.Node = null;
     @property(cc.Node)
     Bg: cc.Node = null;
     @property(cc.Node)
@@ -29,6 +36,9 @@ export default class SceneMgr extends cc.Component {
     pillarArray: Array<cc.Node> = new Array<cc.Node>();
     @property(Array)
     wallArray: Array<cc.Node> = new Array<cc.Node>();
+    
+    @property(cc.Vec2)
+    ar:cc.Vec2=cc.p(0,0);
 
     level: number = 0;
 
@@ -49,7 +59,7 @@ export default class SceneMgr extends cc.Component {
     }
 
     start() {
-        GameEventMgr.register(EventMessage.GE_Reset, this.onResetLevel, this);
+        GameEventMgr.register(EventMessage.GE_Home, this.onResetLevel, this);
         this.lastPos = this.player.parent.convertToWorldSpaceAR(this.player.position).x;
         this.origPos = this.player.position.x;
     }
@@ -64,6 +74,15 @@ export default class SceneMgr extends cc.Component {
         this.curDis = 0;
         this.progress = 0;
         this.index = 0;
+        this.totalDis = this.endPoint.position.x - this.startPoint.position.x;
+    }
+
+    InitPillars()
+    {
+        this.test.getComponent(Pillar).Reset();
+        for (let i = 0; i < this.pillarArray.length; i++) {
+           this.pillarArray[i].getComponent(Pillar).Reset(); 
+        }
     }
 
     onBindJoint(): void {
@@ -82,27 +101,29 @@ export default class SceneMgr extends cc.Component {
     onDepatchJoint(): void {
         this.test.getComponent(Pillar).Release(this.player);
     }
-    @property(cc.Vec2)
-    ar:cc.Vec2=cc.p(0,0);
+
+
     lateUpdate() {
+            this.updateCamera();
+            this.updateProgress();
+    }
+
+    updateCamera()
+    {
         var worldpos = this.player.convertToWorldSpaceAR(this.ar);
         var pos_ = this.camera.parent.convertToNodeSpaceAR(worldpos);
         let pos = cc.v2(pos_.x,this.camera.y);
         this.camera.position = pos;
-        console.log(this.camera.position.x + " " +  this.lastPos  );
-
-        // if (this.player.getComponent(Player).jump && !this.finish && this.player.getComponent(Player).moving) {
-
-
-
-        //     this.updateProgress();
-        // }
     }
 
     updateProgress(): void {
-        this.curDis = this.player.position.x - this.origPos;
-        this.progress = this.curDis / this.totalDis;
-        GameEventMgr.emit(EventMessage.GE_UpdateProgress, this.progress);
+        if (this.player.getComponent(Player).jump 
+        && !this.finish && this.player.getComponent(Player).moving)
+        {
+            this.curDis = this.player.position.x - this.origPos;
+            this.progress = this.curDis / this.totalDis;
+            GameEventMgr.emit(EventMessage.GE_UpdateProgress, this.progress);
+        } 
     }
 
     loadHistory() {
@@ -122,9 +143,10 @@ export default class SceneMgr extends cc.Component {
         var lc = DBMgr.Levels[level];
         this.totalDis = lc.lenght;
         this.Bg.getComponent(cc.Sprite).name = lc.bg;
-        this.LoadPillar(lc.pillars);
-        this.LoadWall(lc.walls);
+        if(lc.pillars!=null && lc.pillars.length > 0) this.LoadPillar(lc.pillars);
+        if(lc.walls!=null && lc.walls.length > 0) this.LoadWall(lc.walls);
         this.endPoint.position = lc.endPointPos;
+        this.totalDis = lc.lenght;
     }
 
     LoadPillar(plist: Array<cc.Vec2>) {
@@ -148,6 +170,7 @@ export default class SceneMgr extends cc.Component {
      */
     onResetLevel(): void {
         this.init();
+        this.InitPillars();
     }
 
     /**

@@ -24,6 +24,7 @@ export default class Pillar extends cc.Component {
     onLoad()
     {
         this.point.active = false; 
+        this.Reset();
     }
 
     BindJoint(player:cc.Node):void
@@ -34,10 +35,10 @@ export default class Pillar extends cc.Component {
             return;
         }
 
-        if( this.startPos > this.node.position.x)
-        {
-            return;
-        }
+        // if(this.startPos > this.node.position.x)
+        // {
+        //     return;
+        // }
 
         if(!this.beenSlinged)
         {
@@ -49,7 +50,6 @@ export default class Pillar extends cc.Component {
             this.pos.position = cc.v2(0, -delta);
             let angleV =this.node.parent.convertToNodeSpaceAR(worldpos).sub(pos);
             var angle = angleV.angle(cc.Vec2.UP.negSelf()) * 180 /Math.PI * -1;
-            console.log("angle : " + angle);
             this.line.angle = angle;
             this.line.active = true;
             this.beenSlinged = true;
@@ -68,5 +68,12 @@ export default class Pillar extends cc.Component {
         this.startPos = pos;
         this.beenSlinged = false;
         this.line.active = false;
+    }
+
+    public Reset():void
+    {
+        this.beenSlinged = false;
+        this.line.active = false;
+        this.point.active = false;
     }
 }
