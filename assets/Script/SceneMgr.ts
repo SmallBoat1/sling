@@ -75,6 +75,8 @@ export default class SceneMgr extends cc.Component {
         this.progress = 0;
         this.index = 0;
         this.totalDis = this.endPoint.position.x - this.startPoint.position.x;
+        console.log(this.totalDis);
+        this.origPos = this.player.position.x;
     }
 
     InitPillars()
@@ -121,6 +123,7 @@ export default class SceneMgr extends cc.Component {
         && !this.finish && this.player.getComponent(Player).moving)
         {
             this.curDis = this.player.position.x - this.origPos;
+            console.log("curDis " + this.curDis + " totalDis " +this.totalDis);
             this.progress = this.curDis / this.totalDis;
             GameEventMgr.emit(EventMessage.GE_UpdateProgress, this.progress);
         } 
@@ -146,7 +149,6 @@ export default class SceneMgr extends cc.Component {
         if(lc.pillars!=null && lc.pillars.length > 0) this.LoadPillar(lc.pillars);
         if(lc.walls!=null && lc.walls.length > 0) this.LoadWall(lc.walls);
         this.endPoint.position = lc.endPointPos;
-        this.totalDis = lc.lenght;
     }
 
     LoadPillar(plist: Array<cc.Vec2>) {
