@@ -1,5 +1,7 @@
 import GameEventMgr from "./GameEventMgr";
 import { EventMessage } from "./EventMessage";
+import GameMgr from "./GameMgr";
+import LevelSelectView from "./LevelSelectView";
 
 const {ccclass, property} = cc._decorator;
 
@@ -28,8 +30,6 @@ export default class UI_Main extends cc.Component {
     LevelPro:cc.Node = null;
     @property(cc.Node)
     Name:cc.Node = null;
-    
-
 
     @property(cc.ProgressBar)
     progress:cc.ProgressBar = null;
@@ -38,21 +38,34 @@ export default class UI_Main extends cc.Component {
     @property(cc.Label)
     nextLevelLabel:cc.Label = null;
 
+    @property(cc.Node)
+    play:cc.Node= null;
+    @property(cc.Label)
+    play_curlevel:cc.Label = null;
+    @property(cc.Sprite)
+    play_cicleFill:cc.Sprite= null;
+
+    @property(LevelSelectView)
+    levelView:LevelSelectView = null;
+
     public init():void
     {
         this.Center.active = true;
+        this.play.active  =true;
         this.LevelPro.active = false;
         this.startJump.active = true;
         this.Home.active = true;
         this.Setting.active = true;
         this.Name.active =true;
+        this.play_curlevel.string = GameMgr.instance.db.loadCurlevel().toString();
+        console.log("UI_Main init");
     }
 
 
     public Openhome():void
     {
-        GameEventMgr.emit(EventMessage.GE_Home);
         this.init();
+        GameEventMgr.emit(EventMessage.GE_Home);
     }
 
 
@@ -60,6 +73,12 @@ export default class UI_Main extends cc.Component {
     {
         // TODO
        
+    }
+
+    public openlevel()
+    {
+        this.levelView.node.active = true;
+        this.levelView.Init();
     }
 
     onFinish(type:number)
@@ -73,6 +92,7 @@ export default class UI_Main extends cc.Component {
        GameEventMgr.emit(EventMessage.GE_Jump)
        this.startJump.active = false;
        this.Center.active = false;
+       this.play.active  =false;
        this.LevelPro.active = true;
        this.curLevelLabel.string = this.Curlevel.toString();
        this.nextLevelLabel.string = (this.Curlevel+1).toString();

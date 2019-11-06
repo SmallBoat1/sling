@@ -8,4 +8,6 @@ export enum EventMessage
     GE_Reset,
     GE_Home,
     GE_Setting,
+    GE_loadComplate,
+    GE_SelectLevel
 }

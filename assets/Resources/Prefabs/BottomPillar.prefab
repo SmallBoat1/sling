@@ -47,8 +47,8 @@
     },
     "_position": {
       "__type__": "cc.Vec3",
-      "x": 192.684,
-      "y": -686.993,
+      "x": 1076.839,
+      "y": -741,
       "z": 0
     },
     "_scale": {
@@ -103,8 +103,8 @@
     },
     "_contentSize": {
       "__type__": "cc.Size",
-      "width": 20,
-      "height": 300
+      "width": 50,
+      "height": 600
     },
     "_anchorPoint": {
       "__type__": "cc.Vec2",
@@ -137,7 +137,7 @@
   },
   {
     "__type__": "cc.Sprite",
-    "_name": "",
+    "_name": "Color<Sprite>",
     "_objFlags": 0,
     "node": {
       "__id__": 2
@@ -209,12 +209,12 @@
     "_offset": {
       "__type__": "cc.Vec2",
       "x": 0,
-      "y": 150
+      "y": 300
     },
     "_size": {
       "__type__": "cc.Size",
-      "width": 20,
-      "height": 300
+      "width": 50,
+      "height": 600
     },
     "_id": ""
   },

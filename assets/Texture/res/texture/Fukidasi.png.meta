@@ -1,0 +1,34 @@
+{
+  "ver": "2.3.3",
+  "uuid": "2aefddc9-6c2d-4864-827d-51ffa52e63ff",
+  "type": "sprite",
+  "wrapMode": "clamp",
+  "filterMode": "bilinear",
+  "premultiplyAlpha": false,
+  "genMipmaps": false,
+  "packable": true,
+  "platformSettings": {},
+  "subMetas": {
+    "Fukidasi": {
+      "ver": "1.0.4",
+      "uuid": "1b439602-7d39-46fd-9d8b-ab6e0bd8df65",
+      "rawTextureUuid": "2aefddc9-6c2d-4864-827d-51ffa52e63ff",
+      "trimType": "auto",
+      "trimThreshold": 1,
+      "rotated": false,
+      "offsetX": 0,
+      "offsetY": 0,
+      "trimX": 0,
+      "trimY": 0,
+      "width": 543,
+      "height": 244,
+      "rawWidth": 543,
+      "rawHeight": 244,
+      "borderTop": 0,
+      "borderBottom": 0,
+      "borderLeft": 0,
+      "borderRight": 0,
+      "subMetas": {}
+    }
+  }
+}

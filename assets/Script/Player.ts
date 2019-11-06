@@ -47,7 +47,8 @@ export default class Player extends cc.Component {
         this.jump = false;
         this.isSmooth = false;
         this.pillarid = 0;
-        this.node.position = cc.v2(-212,-144);
+        this.node.rotation = 0;
+        this.node.position = cc.v2(-404,-23);
         this.rig.enabledContactListener = true;
         this.followTarget = null;
     }

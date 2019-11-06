@@ -1,43 +1,74 @@
 import Level from "./Level";
 import Recard from "./Recard";
+import GameEventMgr from "./GameEventMgr";
+import { EventMessage } from "./EventMessage";
+const { ccclass, property } = cc._decorator;
 
-export default class DBMgr {
+@ccclass
+export default class DBMgr extends cc.Component {
 
-    public static LevelRecard = {};
-    private static readonly configFile:string = "json/levels.json";
-    public static Levels:Array<Level> = new Array<Level>();
+    @property
+    public LevelRecard: Array<Recard> = new Array<Recard>();
+    @property
+    private readonly configFile: string = "levels";
+    @property(Array)
+    public Levels: Array<Level> = new Array<Level>();
 
-    public static loadConfig() 
-    {
-        cc.loader.loadRes(this.configFile,function(error: Error, resource: any){
-            //if(resource)
-            console.log(resource.count);
-        });
+    @property
+    loadend:boolean = false;
+
+    public loadConfig() {
+        var self = this;
+        let onComplate  =  function (error: Error, levelConfigs: cc.JsonAsset[], urls: string[]) {
+            if (error) return;
+            if (levelConfigs.length == 0) {
+                console.log("没有关卡配置");
+                return;
+            }
+            for (let i = 0; i < levelConfigs.length; i++) {
+                const element = levelConfigs[i];
+                var level = new Level();
+                level = element.json;
+                self.Levels.push(level);
+                console.log(level);
+            }
+            self.LoadRecard();
+            self.loadend = true;
+        };
+        cc.loader.loadResDir(this.configFile,onComplate);
     }
 
-    public static LoadAll(levelCount:number) {
-        for (let i = 1; i <= levelCount; i++) {
-          let rs =  cc.sys.localStorage.getItem("level_" + i);
-          if(rs== null) break;
-          var r = JSON.parse(rs);
-          this.LevelRecard[i] = r;
-        }
+    public loadCurlevel() {
+        let rs = cc.sys.localStorage.getItem("curLevel");
+        if (rs == null) return 0;
+        return rs;
     }
 
-    public static Save(level:number,score1:number,score2:number)
-    {
-        let rs =  cc.sys.localStorage.getItem("level_" + level);
-        if(rs == null)
-        {
-            var r = new Recard(level,score1,score2);
-            cc.sys.localStorage.setItem("level_"+level,JSON.stringify(r));
+    public LoadRecard() {
+        console.log("LoadRecard");
+        this.LevelRecard = new Array<Recard>();
+        for (let i = 1; i <= this.Levels.length; i++) {
+            let rs = cc.sys.localStorage.getItem("level_" + i);
+            if (rs == null) break;
+            var r = JSON.parse(rs);
+            this.LevelRecard[i] = r;
         }
-        else
-        {
-            let r:Recard = JSON.parse(rs);
-            if(score1 > r.score1)r.score1 = score1;
-            if(score2 > r.score2) r.score2 = score2;
-            cc.sys.localStorage.setItem("level_"+level,JSON.stringify(r));
+        
+    }
+
+    public Save(level: number, score1: number, score2: number) {
+        let rs = cc.sys.localStorage.getItem("level_" + level);
+        if (rs == null) {
+            var r = new Recard(level, score1, score2);
+            cc.sys.localStorage.setItem("level_" + level, JSON.stringify(r));
+            this.LevelRecard.push(r);
+        }
+        else {
+            let r: Recard = JSON.parse(rs);
+            if (score1 > r.score1) r.score1 = score1;
+            if (score2 > r.score2) r.score2 = score2;
+            cc.sys.localStorage.setItem("level_" + level, JSON.stringify(r));
+            this.LevelRecard[level] = r;
         }
     }
 }
