@@ -9,5 +9,6 @@ export enum EventMessage
     GE_Home,
     GE_Setting,
     GE_loadComplate,
-    GE_SelectLevel
+    GE_CloseLevel,
+    GE_SelectLevel,
 }

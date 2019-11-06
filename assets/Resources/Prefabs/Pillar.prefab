@@ -31,7 +31,7 @@
       }
     ],
     "_active": true,
-    "_level": 2,
+    "_level": 1,
     "_components": [
       {
         "__id__": 20
@@ -194,9 +194,9 @@
       "__id__": 2
     },
     "_enabled": true,
-    "_type": 0,
+    "_type": 2,
     "_allowSleep": true,
-    "_gravityScale": 1,
+    "_gravityScale": 0,
     "_linearDamping": 0,
     "_angularDamping": 0,
     "_linearVelocity": {
@@ -256,7 +256,7 @@
       "__id__": 1
     },
     "_children": [],
-    "_active": false,
+    "_active": true,
     "_level": 3,
     "_components": [
       {
@@ -726,7 +726,7 @@
       "__id__": 1
     },
     "_enabled": true,
-    "_type": 0,
+    "_type": 2,
     "_allowSleep": true,
     "_gravityScale": 1,
     "_linearDamping": 0,
@@ -790,6 +790,9 @@
     "_enabled": true,
     "point": {
       "__id__": 10
+    },
+    "opoint": {
+      "__id__": 7
     },
     "rig": {
       "__id__": 20

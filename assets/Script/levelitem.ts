@@ -1,6 +1,7 @@
 import Level from "./Level";
 import GameEventMgr from "./GameEventMgr";
 import { EventMessage } from "./EventMessage";
+import GameMgr from "./GameMgr";
 
 const { ccclass, property } = cc._decorator;
 
@@ -53,6 +54,11 @@ export default class levelItem extends cc.Component {
 
     public onClick()
     {
-        GameEventMgr.emit(EventMessage.GE_SelectLevel,this.data.id);
+        GameEventMgr.emit(EventMessage.GE_CloseLevel);
+        GameMgr.instance.db.SaveCurlevel(this.data.id);
+        
+        GameMgr.instance.scene.selectLevel(this.data.id);
+        GameEventMgr.emit(EventMessage.GE_SelectLevel);
+        
     }
 }

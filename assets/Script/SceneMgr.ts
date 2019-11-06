@@ -58,21 +58,22 @@ export default class SceneMgr extends cc.Component {
     start() {
         var self = this;
         GameEventMgr.register(EventMessage.GE_Home, this.onResetLevel, this);
-        GameEventMgr.register(EventMessage.GE_SelectLevel,this.selectLevel,this);
         this.lastPos = this.player.parent.convertToWorldSpaceAR(this.player.position).x;
         this.origPos = this.player.position.x;
     }
 
     selectLevel(level :number)
     {
+        console.log("selectLevel " + level);
         this.level = level;
         this.onResetLevel();
     }
 
     public init(): void 
     {
-        console.log("init");
         var self = this;
+        console.log("init "  + self.level);
+        if(self.level == 0) self.level = GameMgr.instance.db.loadCurlevel();
         self.loadLevel(self.level);
         self.player.getComponent(Player).Init();
         self.finish = false;
@@ -109,6 +110,7 @@ export default class SceneMgr extends cc.Component {
 
     onDepatchJoint(): void {
         var self = this;
+        if(self.index >=self.pillarArray.length )return;
         self.pillarArray[self.index].getComponent(Pillar).Release(self.player);
         self.index++;
     }
@@ -149,13 +151,12 @@ export default class SceneMgr extends cc.Component {
      * @param level 
      */
     loadLevel(level: number): void {
-        
-        if (GameMgr.instance.db.Levels.length <= level) {
-
+        var self = this;
+        if (GameMgr.instance.db.Levels.length < level) {
             return;
         }
         console.log("LoadScene" + level);
-        var lc = GameMgr.instance.db.Levels[level];
+        var lc = GameMgr.instance.db.Levels[level-1];
         this.totalDis = lc.lenght;
         console.log(this.totalDis);
         this.LoadPillar(lc.pillars);
@@ -166,12 +167,13 @@ export default class SceneMgr extends cc.Component {
 
     LoadPillar(plist: Array<cc.Vec2>) {
         if(plist == null || plist.length == 0) return;
-        console.log("LoadPillar");
+        
         this.pillarArray = new Array<cc.Node>();
         for (let i = 0; i < plist.length; i++) {
             var p = cc.instantiate(this.pillarPref);
             p.parent = this.node;
             p.position = plist[i];
+            console.log("LoadPillar " + i + " pos " + plist[i]);
             this.pillarArray.push(p);
         }
     }

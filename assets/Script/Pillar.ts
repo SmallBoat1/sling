@@ -9,6 +9,8 @@ const {ccclass, property} = cc._decorator;
 export default class Pillar extends cc.Component {
     @property(cc.Node)
     point:cc.Node = null;
+    @property(cc.Node)
+    opoint:cc.Node = null;
     @property(cc.RigidBody)
     rig: cc.RigidBody = null;
     @property(cc.Node)
@@ -24,6 +26,7 @@ export default class Pillar extends cc.Component {
     onLoad()
     {
         this.point.active = false; 
+        this.opoint.active = true;
         this.Reset();
     }
 
@@ -54,6 +57,7 @@ export default class Pillar extends cc.Component {
             this.line.active = true;
             this.beenSlinged = true;
             this.point.active = true;
+            this.opoint.active = false;
         }  
     }
 
@@ -75,5 +79,6 @@ export default class Pillar extends cc.Component {
         this.beenSlinged = false;
         this.line.active = false;
         this.point.active = false;
+        this.opoint.active = true;
     }
 }

@@ -21,7 +21,7 @@ export default class LevelSelectView extends cc.Component {
 
     start()
     {
-        GameEventMgr.register(EventMessage.GE_SelectLevel,this.Close,this);
+        GameEventMgr.register(EventMessage.GE_CloseLevel,this.Close,this);
     }
 
     Init() {

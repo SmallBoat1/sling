@@ -111,5 +111,6 @@ export default class UI_Main extends cc.Component {
     { 
         GameEventMgr.register(EventMessage.GE_UpdateProgress,this.updateProgress,this);
         GameEventMgr.register(EventMessage.GE_Finish,this.onFinish,this);
+        GameEventMgr.register(EventMessage.GE_SelectLevel,this.init,this);
     }
 }

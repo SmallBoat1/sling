@@ -38,6 +38,11 @@ export default class DBMgr extends cc.Component {
         cc.loader.loadResDir(this.configFile,onComplate);
     }
 
+    public SaveCurlevel(level :number)
+    {
+        cc.sys.localStorage.setItem("curLevel",level);
+    }
+
     public loadCurlevel() {
         let rs = cc.sys.localStorage.getItem("curLevel");
         if (rs == null) return 0;
