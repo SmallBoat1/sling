@@ -29,6 +29,7 @@ export default class Player extends cc.Component {
     jump: boolean = false;
     @property
     moving: boolean = false;
+    fall:boolean = false;
 
     @property(cc.Node)
     followTarget: cc.Node = null;
@@ -51,6 +52,7 @@ export default class Player extends cc.Component {
         this.node.position = cc.v2(-404,-23);
         this.rig.enabledContactListener = true;
         this.followTarget = null;
+        this.fall = false;
     }
 
     onBindJoint(target: cc.Node): void {
@@ -80,7 +82,6 @@ export default class Player extends cc.Component {
         } catch (error) {
             console.log(error);
         }
-      
     }
 
     onDepatchJoint(): void {
@@ -101,7 +102,8 @@ export default class Player extends cc.Component {
         console.log("碰撞" + other.name);
         this.rig.enabledContactListener = false;
         this.onDepatchJoint();
-        if(this.followTarget) this.followTarget.parent.active = false;
+        if(this.followTarget) 
+            this.followTarget.parent.active = false;
         this.node.getChildByName("tail").active  =false;
         if(other.name == "cube")// 到达终点
         {

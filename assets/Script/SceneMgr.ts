@@ -162,6 +162,7 @@ export default class SceneMgr extends cc.Component {
         this.LoadPillar(lc.pillars);
         this.LoadWall(lc.walls);
         this.endPoint.position = lc.endPointPos;
+        self.player.setSiblingIndex(self.node.childrenCount-1);
         // this.Bg.node.color = lc.bg;
     }
 
