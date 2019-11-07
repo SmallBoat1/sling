@@ -6,6 +6,7 @@ import Player from "./Player";
 import DBMgr from "./DBMgr";
 import Level from "./Level";
 import GameMgr from "./GameMgr";
+import EndPoint from "./EndPoint";
 
 const { ccclass, property } = cc._decorator;
 
@@ -161,7 +162,7 @@ export default class SceneMgr extends cc.Component {
         console.log(this.totalDis);
         this.LoadPillar(lc.pillars);
         this.LoadWall(lc.walls);
-        this.endPoint.position = lc.endPointPos;
+        this.endPoint.getComponent(EndPoint).setPoint(lc.endPointPos) ;
         self.player.setSiblingIndex(self.node.childrenCount-1);
         // this.Bg.node.color = lc.bg;
     }

@@ -56,6 +56,7 @@ export default class Player extends cc.Component {
     }
 
     onBindJoint(target: cc.Node): void {
+        if(!this.moving) return;
         this.followTarget = target;
         var pos = this.followTarget .parent.parent.convertToWorldSpaceAR(target.parent.position);
         this.node.lookAt(new cc.Vec3(pos.x,pos.y,0));
@@ -120,6 +121,7 @@ export default class Player extends cc.Component {
     {
         GameEventMgr.emit(EventMessage.GE_Finish,type);
         this.moving = false;
+
     }
 
     updatePos():void 
