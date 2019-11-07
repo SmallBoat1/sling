@@ -27,7 +27,10 @@ onLoad()
         GameMgr.instance = this;
     console.log("GameMgr load");
     cc.director.getPhysicsManager().enabled = true;
+    // cc.director.getPhysicsManager().enabledAccumulator = true;
     cc.director.getCollisionManager().enabled = true;
+    cc.director.getCollisionManager().enabledDebugDraw = true;
+    cc.director.getCollisionManager().enabledDrawBoundingBox = true;
 }
 
     start()

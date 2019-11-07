@@ -2,30 +2,33 @@
   "assets-sort-type": "ext",
   "collision-matrix": [
     [
+      true,
       false,
-      false,
-      false
+      true,
+      true,
+      true,
+      true
     ],
     [
       false,
       true
     ],
     [
-      false,
+      true,
       false,
       true,
       null,
       true
     ],
     [
-      false,
+      true,
       false,
       false,
       false,
       true
     ],
     [
-      false,
+      true,
       false,
       true,
       true,
@@ -33,7 +36,7 @@
       true
     ],
     [
-      false,
+      true,
       false,
       false,
       false,
@@ -70,7 +73,7 @@
     "height": 640,
     "width": 960
   },
+  "start-scene": "2d2f792f-a40c-49bb-a189-ed176a246e49",
   "use-customize-simulator": true,
-  "use-project-simulator-setting": false,
-  "start-scene": "current"
+  "use-project-simulator-setting": false
 }

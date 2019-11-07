@@ -11,12 +11,14 @@ export default class Pillar extends cc.Component {
     point:cc.Node = null;
     @property(cc.Node)
     opoint:cc.Node = null;
-    @property(cc.RigidBody)
-    rig: cc.RigidBody = null;
+    // @property(cc.RigidBody)
+    // rig: cc.RigidBody = null;
     @property(cc.Node)
     line:cc.Node = null;
     @property(cc.Node)
     pos:cc.Node = null;
+    @property(cc.Node)
+    zhuzi:cc.Node = null;
 
     @property
     startPos:number = 0;
@@ -67,11 +69,40 @@ export default class Pillar extends cc.Component {
         this.line.active = false;
     }
 
-    public Init(pos:number):void
+    public Init(pos:cc.Vec2):void
     {
-        this.startPos = pos;
+        //this.startPos = pos;
+        this.node.setPosition(pos);
+        this.InitRig();
         this.beenSlinged = false;
         this.line.active = false;
+    }
+
+    InitRig()
+    {
+        var rig =  this.node.addComponent(cc.RigidBody);
+        rig.type = cc.RigidBodyType.Kinematic;
+        rig.gravityScale = 0;
+        rig.awake = true;
+        
+        var box = this.node.addComponent(cc.PhysicsBoxCollider);
+        box.tag = 1;
+        box.size = cc.size(1,1);
+        box.apply();
+        var rig_zhu = this.zhuzi.addComponent(cc.RigidBody);
+        rig_zhu.type = cc.RigidBodyType.Kinematic;
+        rig_zhu.awake = true;
+        var box_zhu = this.zhuzi.addComponent(cc.PhysicsBoxCollider);
+        box_zhu.tag=0;
+        box_zhu.sensor = false;
+        box_zhu.size = cc.size(50,700);
+        box_zhu.offset = cc.v2(0,350);
+        box_zhu.apply();
+        rig_zhu.enabledContactListener = true;
+        
+        this.line.getComponent(cc.RevoluteJoint).connectedBody = rig;
+
+        console.log(" box " + box_zhu.size.height + " y " + box_zhu.offset.y);
     }
 
     public Reset():void

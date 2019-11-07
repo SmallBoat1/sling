@@ -45,7 +45,7 @@ export default class DBMgr extends cc.Component {
 
     public loadCurlevel() {
         let rs = cc.sys.localStorage.getItem("curLevel");
-        if (rs == null) return 0;
+        if (rs == null) return 1;
         return rs;
     }
 

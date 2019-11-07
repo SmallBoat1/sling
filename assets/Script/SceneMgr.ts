@@ -167,13 +167,20 @@ export default class SceneMgr extends cc.Component {
 
     LoadPillar(plist: Array<cc.Vec2>) {
         if(plist == null || plist.length == 0) return;
-        
+        if(this.pillarArray!=null && this.pillarArray.length > 0)
+        {
+            for (let i = 0; i < this.pillarArray.length; i++) {
+                const p = this.pillarArray[i];
+                p.destroy();
+            }
+        }
         this.pillarArray = new Array<cc.Node>();
         for (let i = 0; i < plist.length; i++) {
             var p = cc.instantiate(this.pillarPref);
             p.parent = this.node;
-            p.position = plist[i];
-            console.log("LoadPillar " + i + " pos " + plist[i]);
+            p.active = true;
+            p.getComponent(Pillar).Init(plist[i]);
+            console.log("LoadPillar " + i + " pos " + plist[i].toString());
             this.pillarArray.push(p);
         }
     }
@@ -181,13 +188,35 @@ export default class SceneMgr extends cc.Component {
     LoadWall(wlist: Array<cc.Vec2>) {
         if(wlist == null || wlist.length == 0) return;
         console.log("LoadWall");
+        if(this.wallArray!=null && this.wallArray.length > 0)
+        {
+            for (let i = 0; i < this.wallArray.length; i++) {
+                const p = this.wallArray[i];
+                p.destroy();
+            }
+        }
         this.wallArray = new Array<cc.Node>();
         for (let i = 0; i < wlist.length; i++) {
             var w = cc.instantiate(this.wallPref);
             w.parent = this.node;
-            w.position = wlist[i];
+            w.active = true;
+            w.setPosition(wlist[i]) ; 
+            this.SetBox(w);
             this.wallArray.push(w);
         }
+    }
+
+    SetBox(wall:cc.Node)
+    {
+        var rig = wall.addComponent(cc.RigidBody);
+        rig.type = cc.RigidBodyType.Kinematic;
+        var box = wall.addComponent(cc.PhysicsBoxCollider);
+        box.tag = 5;
+        box.restitution = 0.2;
+        box.size = cc.size(50,600);
+        box.offset = cc.v2(0,300);
+        box.apply();
+        console.log(" box " + box.size.height + " y " + box.offset.y);
     }
 
     /**
