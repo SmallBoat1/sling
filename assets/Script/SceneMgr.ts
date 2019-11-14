@@ -133,13 +133,13 @@ export default class SceneMgr extends cc.Component {
     }
 
     updateProgress(): void {
-        if (this.player.getComponent(Player).jump 
-        && !this.finish && this.player.getComponent(Player).moving)
+        var self = this;
+        if (self.player.getComponent(Player).jump 
+        && !self.finish && self.player.getComponent(Player).moving)
         {
-            this.curDis = this.player.position.x - this.origPos;
-            //console.log("curDis " + this.curDis + " totalDis " +this.totalDis);
-            this.progress = this.curDis / this.totalDis;
-            GameEventMgr.emit(EventMessage.GE_UpdateProgress, this.progress);
+            self.curDis = self.player.position.x - self.origPos;
+            var pro = self.curDis / self.totalDis;
+            GameEventMgr.emit(EventMessage.GE_UpdateProgress, pro);
         } 
     }
 

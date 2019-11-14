@@ -101,10 +101,10 @@ export default class UI_Main extends cc.Component {
        this.Name.active =false;
     }
 
-    updateProgress(pro:number):void
+    updateProgress(context :any,pro:number):void
     {
         this.progress.progress = pro;
-        //console.log(pro);
+        
     }
 
     start () 
