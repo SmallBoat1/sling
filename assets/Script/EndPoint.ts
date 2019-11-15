@@ -18,14 +18,14 @@ export default class EndPoint extends cc.Component
 
     setPoint (pos:cc.Vec2) 
     {
-        this.removeBox();
+        //this.removeBox();
 
         this.node.setPosition(pos);
 
-        this.bindBox(this.cubeLeft,90,110,0,0);
-        this.bindBox(this.cubeRight,90,110,0,0);
-        this.bindBox(this.cubebottom,300,16,0,0);
-        this.bindBox(this.cup,144,130,0,0);
+        this.bindBox(this.cubeLeft,90,110,0,0,false);
+        this.bindBox(this.cubeRight,90,110,0,0,false);
+        this.bindBox(this.cubebottom,300,16,0,0,false);
+        this.bindBox(this.cup,144,130,0,0,true);
     }
 
     removeBox()
@@ -43,7 +43,7 @@ export default class EndPoint extends cc.Component
         this.cup.removeComponent(cc.RigidBody);
     }
 
-    bindBox(node:cc.Node,width:number,height:number,x:number,y:number)
+    bindBox(node:cc.Node,width:number,height:number,x:number,y:number,sensor:boolean)
     {
         var rig = node.addComponent(cc.RigidBody);
         rig.type   = cc.RigidBodyType.Static;
@@ -53,6 +53,7 @@ export default class EndPoint extends cc.Component
         box.restitution = 0.2;
         box.size = cc.size(width,height);
         box.offset = cc.v2(x,y);
+        box.sensor = sensor;
         box.apply();
     }
 

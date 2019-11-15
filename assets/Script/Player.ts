@@ -67,7 +67,6 @@ export default class Player extends cc.Component {
 
     addRig(): void {
         var v = cc.Vec2.ZERO;
-        //this.rig.type = cc.RigidBodyType.Dynamic;
         try {
             if(this.followTarget)
             {
@@ -106,7 +105,7 @@ export default class Player extends cc.Component {
         if(this.followTarget) 
             this.followTarget.parent.active = false;
         this.node.getChildByName("tail").active  =false;
-        if(other.name == "cube")// 到达终点
+        if(other.tag == 2)// 到达终点
         {
             this.onFinish(1);
         }
@@ -121,7 +120,6 @@ export default class Player extends cc.Component {
     {
         GameEventMgr.emit(EventMessage.GE_Finish,type);
         this.moving = false;
-
     }
 
     updatePos():void 

@@ -3,8 +3,6 @@ import GameEventMgr from "./GameEventMgr";
 import { EventMessage } from "./EventMessage";
 import Pillar from "./Pillar";
 import Player from "./Player";
-import DBMgr from "./DBMgr";
-import Level from "./Level";
 import GameMgr from "./GameMgr";
 import EndPoint from "./EndPoint";
 
@@ -59,6 +57,7 @@ export default class SceneMgr extends cc.Component {
     start() {
         var self = this;
         GameEventMgr.register(EventMessage.GE_Home, this.onResetLevel, this);
+        GameEventMgr.register(EventMessage.GE_Finish, this.onFinishlevel, this);
         this.lastPos = this.player.parent.convertToWorldSpaceAR(this.player.position).x;
         this.origPos = this.player.position.x;
     }
@@ -84,6 +83,7 @@ export default class SceneMgr extends cc.Component {
         self.index = 0;
        
         self.origPos = self.player.position.x;
+        self.camera.position = cc.Vec2.ZERO;
     }
 
     InitPillars()
@@ -96,6 +96,7 @@ export default class SceneMgr extends cc.Component {
 
     onBindJoint(): void {
         var self = this;
+        if(self.finish) return;
         if (self.index >= self.pillarArray.length) {
             console.log("最后一个了");
             return;
@@ -126,10 +127,14 @@ export default class SceneMgr extends cc.Component {
     updateCamera()
     {
         var self = this;
-        var worldpos = self.player.convertToWorldSpaceAR(self.ar);
-        var pos_ = self.camera.parent.convertToNodeSpaceAR(worldpos);
-        let pos = cc.v2(pos_.x,self.camera.y);
-        self.camera.position = pos;
+        if (self.player.getComponent(Player).jump 
+        && !self.finish && self.player.getComponent(Player).moving)
+        {
+            var worldpos = self.player.convertToWorldSpaceAR(self.ar);
+            var pos_ = self.camera.parent.convertToNodeSpaceAR(worldpos);
+            let pos = cc.v2(pos_.x,self.camera.y);
+            self.camera.position = pos;
+        }
     }
 
     updateProgress(): void {
@@ -138,8 +143,8 @@ export default class SceneMgr extends cc.Component {
         && !self.finish && self.player.getComponent(Player).moving)
         {
             self.curDis = self.player.position.x - self.origPos;
-            var pro = self.curDis / self.totalDis;
-            GameEventMgr.emit(EventMessage.GE_UpdateProgress, pro);
+            self.progress = self.curDis / self.totalDis;
+            GameEventMgr.emit(EventMessage.GE_UpdateProgress, self.progress);
         } 
     }
 
@@ -159,7 +164,7 @@ export default class SceneMgr extends cc.Component {
         console.log("LoadScene" + level);
         var lc = GameMgr.instance.db.Levels[level-1];
         this.totalDis = lc.lenght;
-        console.log(this.totalDis);
+        // console.log(this.totalDis);
         this.LoadPillar(lc.pillars);
         this.LoadWall(lc.walls);
         this.endPoint.getComponent(EndPoint).setPoint(lc.endPointPos) ;
@@ -168,7 +173,7 @@ export default class SceneMgr extends cc.Component {
     }
 
     LoadPillar(plist: Array<cc.Vec2>) {
-        if(plist == null || plist.length == 0) return;
+        
         if(this.pillarArray!=null && this.pillarArray.length > 0)
         {
             for (let i = 0; i < this.pillarArray.length; i++) {
@@ -176,6 +181,7 @@ export default class SceneMgr extends cc.Component {
                 p.destroy();
             }
         }
+        if(plist == null || plist.length == 0) return;
         this.pillarArray = new Array<cc.Node>();
         for (let i = 0; i < plist.length; i++) {
             var p = cc.instantiate(this.pillarPref);
@@ -188,7 +194,7 @@ export default class SceneMgr extends cc.Component {
     }
 
     LoadWall(wlist: Array<cc.Vec2>) {
-        if(wlist == null || wlist.length == 0) return;
+       
         console.log("LoadWall");
         if(this.wallArray!=null && this.wallArray.length > 0)
         {
@@ -197,6 +203,7 @@ export default class SceneMgr extends cc.Component {
                 p.destroy();
             }
         }
+        if(wlist == null || wlist.length == 0) return;
         this.wallArray = new Array<cc.Node>();
         for (let i = 0; i < wlist.length; i++) {
             var w = cc.instantiate(this.wallPref);
@@ -232,8 +239,17 @@ export default class SceneMgr extends cc.Component {
     /**
      * 完成关卡
      */
-    onFinishlevel(score1: number, score2: number): void {
+    onFinishlevel(obj:any, type : number): void {
         this.finish = true;
-        GameMgr.instance.db.Save(this.level, score1, score2);
+        let score1: number, score2: number = 0;
+        if(type == 1)
+        {
+            score1 = 1;
+            GameMgr.instance.db.Save(this.level, score1, score2);
+        }
+        else if(this.progress >= 1)
+        {
+            GameMgr.instance.db.Save(this.level, 0, 0);
+        }
     }
 }

@@ -2,6 +2,7 @@ import GameEventMgr from "./GameEventMgr";
 import { EventMessage } from "./EventMessage";
 import GameMgr from "./GameMgr";
 import LevelSelectView from "./LevelSelectView";
+import SelectRoleView from "./SelectRoleView";
 
 const {ccclass, property} = cc._decorator;
 
@@ -48,6 +49,12 @@ export default class UI_Main extends cc.Component {
     @property(LevelSelectView)
     levelView:LevelSelectView = null;
 
+    @property(SelectRoleView)
+    selectRoleView:SelectRoleView = null;
+
+    @property(cc.Node)
+    setingView:cc.Node = null;
+
     public init():void
     {
         this.Center.active = true;
@@ -72,7 +79,7 @@ export default class UI_Main extends cc.Component {
     public openSetting():void
     {
         // TODO
-       
+       this.setingView.active = true;
     }
 
     public openlevel()
@@ -81,7 +88,13 @@ export default class UI_Main extends cc.Component {
         this.levelView.Init();
     }
 
-    onFinish(type:number)
+    openRoleButton()
+    {
+        this.selectRoleView.node.active = true;
+        this.selectRoleView.init();
+    }
+
+    onFinish(obj:any, type:number)
     {
         this.Home.active = true;
         this.Setting.active = true;

@@ -5,6 +5,7 @@ import GameEventMgr from "./GameEventMgr";
 import { EventMessage } from "./EventMessage";
 import DBMgr from "./DBMgr";
 import Level from "./Level";
+import SoundMgr from "./SoundMgr";
 
 const {ccclass, property} = cc._decorator;
 
@@ -20,7 +21,9 @@ export default class GameMgr extends cc.Component
     ui:UI_Main = null;
     @property (DBMgr)
     db:DBMgr = null;
-    
+    @property (SoundMgr)
+    sound:DBMgr = null;
+
 onLoad()
 {  
     if(GameMgr.instance == null)

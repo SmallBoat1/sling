@@ -29,7 +29,8 @@ export default class LevelSelectView extends cc.Component {
         var lc = GameMgr.instance.db.Levels;
         var lr = GameMgr.instance.db.LevelRecard;
 
-        if (this.itemlist == null) this.itemlist = new Array<cc.Node>();
+        if (this.itemlist == null) 
+            this.itemlist = new Array<cc.Node>();
         else {
             this.itemlist.forEach(item => {
                 item.active = false;
@@ -44,9 +45,10 @@ export default class LevelSelectView extends cc.Component {
                 this.itemlist.push(item);
             }
             this.itemlist[i].active = true;
-            let r = i >= lr.length ? null : lr[i];
+            var r = i >= lr.length ? null : lr[i];
             var it = this.itemlist[i];
-            it.getComponent(levelItem).setData(l, r != null, r == null ? false : r.score1 == 1, r == null ? false : r.score1 == 1);
+            console.log(" r " + JSON.stringify(r)  + " lr " + JSON.stringify(lr));
+            it.getComponent(levelItem).setData(l, r != null, r == null ? false : r.score2 == 1, r == null ? false : r.score1 == 1);
         }
     }
 }

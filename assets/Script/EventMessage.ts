@@ -11,4 +11,5 @@ export enum EventMessage
     GE_loadComplate,
     GE_CloseLevel,
     GE_SelectLevel,
+    GE_SelectRole
 }
